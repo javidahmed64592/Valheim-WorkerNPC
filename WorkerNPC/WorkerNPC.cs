@@ -26,6 +26,9 @@ namespace WorkerNPC
 
         public void Start()
         {
+            // Add bed to build menu in Misc tab
+            WorkerBed.RegisterWorkerBed();
+
             // Add chest to build menu in Misc tab
             WorkerChest.RegisterWorkerChest();
         }
