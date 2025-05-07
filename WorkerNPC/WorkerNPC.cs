@@ -23,5 +23,11 @@ namespace WorkerNPC
             Assembly assembly = Assembly.GetExecutingAssembly();
             HarmonyInstance.PatchAll(assembly);
         }
+
+        public void Start()
+        {
+            // Add chest to build menu in Misc tab
+            WorkerChest.RegisterWorkerChest();
+        }
     }
 }
