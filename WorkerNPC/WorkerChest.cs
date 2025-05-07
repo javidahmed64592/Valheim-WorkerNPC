@@ -18,15 +18,15 @@ namespace WorkerNPC
 
             PrefabManager.OnPrefabsRegistered += () =>
             {
-                GameObject baseChest = PrefabManager.Instance.GetPrefab(prefabName);
+                GameObject chest = GetBaseChest();
 
-                if (baseChest == null)
+                if (chest == null)
                 {
                     Main.logger.LogError("Base chest prefab not found!");
                     return;
                 }
 
-                CustomPiece workerChest = new CustomPiece(baseChest, true, new PieceConfig
+                CustomPiece workerChest = new CustomPiece(chest, true, new PieceConfig
                 {
                     Name = displayName,
                     PieceTable = "_HammerPieceTable",
@@ -36,6 +36,11 @@ namespace WorkerNPC
                 PieceManager.Instance.AddPiece(workerChest);
                 Main.logger.LogInfo($"Registered {displayName} under {buildCategory} category.");
             };
+        }
+
+        private static GameObject GetBaseChest()
+        {
+            return PrefabManager.Instance.GetPrefab(prefabName);
         }
     }
 }
