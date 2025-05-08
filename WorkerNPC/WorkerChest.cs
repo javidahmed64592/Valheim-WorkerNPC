@@ -18,17 +18,22 @@ namespace WorkerNPC
         {
             Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
 
-            PrefabManager.OnVanillaPrefabsAvailable += () =>
+            void CreateChest()
             {
                 GameObject chestObject = GetBaseChest();
-                PieceConfig chest = new PieceConfig();
-                chest.Name = displayName;
-                chest.Description = description;
-                chest.PieceTable = pieceTable;
-                chest.Category = buildCategory;
+                PieceConfig chest = new PieceConfig
+                {
+                    Name = displayName,
+                    Description = description,
+                    PieceTable = pieceTable,
+                    Category = buildCategory
+                };
                 PieceManager.Instance.AddPiece(new CustomPiece(chestObject, false, chest));
                 Jotunn.Logger.LogInfo($"Registered {displayName} under {buildCategory} category.");
-            };
+                PrefabManager.OnVanillaPrefabsAvailable -= CreateChest;
+            }
+
+            PrefabManager.OnVanillaPrefabsAvailable += CreateChest;
         }
 
         private static GameObject GetBaseChest()

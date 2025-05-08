@@ -2,6 +2,7 @@
 using Jotunn.Configs;
 using Jotunn.Entities;
 using UnityEngine;
+using JetBrains.Annotations;
 
 namespace WorkerNPC
 {
@@ -18,7 +19,7 @@ namespace WorkerNPC
         {
             Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
 
-            PrefabManager.OnVanillaPrefabsAvailable += () =>
+            void CreateBed()
             {
                 GameObject bedObject = GetBaseBed();
                 bedObject.AddComponent<WorkerBedBehavior>();
@@ -33,7 +34,10 @@ namespace WorkerNPC
 
                 PieceManager.Instance.AddPiece(new CustomPiece(bedObject, false, bed));
                 Jotunn.Logger.LogInfo($"Registered {displayName} under {buildCategory} category.");
-            };
+                PrefabManager.OnVanillaPrefabsAvailable -= CreateBed;
+            }
+
+            PrefabManager.OnVanillaPrefabsAvailable += CreateBed;
         }
 
         private static GameObject GetBaseBed()
