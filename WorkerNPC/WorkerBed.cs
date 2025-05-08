@@ -59,7 +59,6 @@ namespace WorkerNPC
         private GameObject workerNPC;
         public static string prefabName = "Dverger";
         public static string customName = "worker_npc";
-        public static string npcActiveKey = $"{customName}_active";
 
         private void Start()
         {
@@ -76,29 +75,20 @@ namespace WorkerNPC
                 return;
             }
 
-            bool npcExists = bedView.GetZDO().GetBool(npcActiveKey, false);
-
-            if (npcExists)
+            bool npcFound = false;
+            foreach (Transform child in transform)
             {
-                bool npcFound = false;
-                foreach (Transform child in transform)
+                if (child.name.Contains(customName))
                 {
-                    if (child.name.Contains(customName))
-                    {
-                        npcFound = true;
-                        break;
-                    }
+                    npcFound = true;
+                    break;
                 }
+            }
 
-                if (npcFound)
-                {
-                    Jotunn.Logger.LogInfo("Worker NPC already exists—skipping spawn.");
-                    return;
-                }
-                else
-                {
-                    Jotunn.Logger.LogWarning("Worker NPC marked as active but missing—re-spawning.");
-                }
+            if (npcFound)
+            {
+                Jotunn.Logger.LogInfo("Worker NPC already exists—skipping spawn.");
+                return;
             }
 
             SpawnWorkerNPC();
@@ -125,13 +115,6 @@ namespace WorkerNPC
 
             workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);
             workerNPC.transform.parent = transform;
-
-            ZNetView bedView = GetComponent<ZNetView>();
-            if (bedView != null && bedView.IsValid())
-            {
-                bedView.GetZDO().Set(npcActiveKey, true);
-                Jotunn.Logger.LogInfo("Worker NPC spawned and marked as active.");
-            }
         }
 
         private void RemoveWorkerNPC()
@@ -140,16 +123,6 @@ namespace WorkerNPC
             {
                 ZNetScene.instance.Destroy(workerNPC);
                 Jotunn.Logger.LogInfo("Worker NPC removed.");
-            }
-            else
-            {
-                Jotunn.Logger.LogWarning("Worker NPC was missing but marked as active—resetting state.");
-            }
-
-            ZNetView bedView = GetComponent<ZNetView>();
-            if (bedView != null && bedView.IsValid())
-            {
-                bedView.GetZDO().Set(npcActiveKey, false);
             }
         }
     }
