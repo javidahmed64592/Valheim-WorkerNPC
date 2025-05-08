@@ -49,6 +49,15 @@ namespace WorkerNPC
                 Jotunn.Logger.LogError("Base bed prefab not found!");
                 return null;
             }
+            
+            else
+            {
+                Bed bedComponent = clonedBed.GetComponent<Bed>();
+                if (bedComponent != null)
+                {
+                    Object.Destroy(bedComponent);
+                }
+            }
 
             return clonedBed;
         }
