@@ -2,39 +2,31 @@
 using Jotunn.Configs;
 using Jotunn.Entities;
 using UnityEngine;
-using static Piece;
 
 namespace WorkerNPC
 {
     public static class WorkerChest
     {
         public static string displayName = "Worker Chest";
+        public static string description = "A chest for storing items. Can be used by workers.";
+        public static string pieceTable = PieceTables.Hammer;
         public static string prefabName = "piece_chest_wood";
-        public static string buildCategory = PieceCategory.Misc.ToString();
+        public static string buildCategory = "Workers";
 
         public static void RegisterWorkerChest()
         {
-            Main.logger.LogInfo($"Attempting to register {displayName}...");
+            Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
 
-            PrefabManager.OnPrefabsRegistered += () =>
+            PrefabManager.OnVanillaPrefabsAvailable += () =>
             {
-                GameObject chest = GetBaseChest();
-
-                if (chest == null)
-                {
-                    Main.logger.LogError("Base chest prefab not found!");
-                    return;
-                }
-
-                CustomPiece workerChest = new CustomPiece(chest, true, new PieceConfig
-                {
-                    Name = displayName,
-                    PieceTable = "_HammerPieceTable",
-                    Category = buildCategory
-                });
-
-                PieceManager.Instance.AddPiece(workerChest);
-                Main.logger.LogInfo($"Registered {displayName} under {buildCategory} category.");
+                GameObject chestObject = GetBaseChest();
+                PieceConfig chest = new PieceConfig();
+                chest.Name = displayName;
+                chest.Description = description;
+                chest.PieceTable = pieceTable;
+                chest.Category = buildCategory;
+                PieceManager.Instance.AddPiece(new CustomPiece(chestObject, false, chest));
+                Jotunn.Logger.LogInfo($"Registered {displayName} under {buildCategory} category.");
             };
         }
 
