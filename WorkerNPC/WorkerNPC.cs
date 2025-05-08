@@ -1,11 +1,13 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Jotunn.Utils;
 using System.Reflection;
 
 namespace WorkerNPC
 {
     [BepInPlugin(pluginGUID, pluginName, pluginVersion)]
+    [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public class Main : BaseUnityPlugin
     {
         const string pluginGUID = "com.example.GUID";
@@ -18,7 +20,7 @@ namespace WorkerNPC
 
         public void Awake()
         {
-            Main.logger.LogInfo("Loading WorkerNPC mod...");
+            Jotunn.Logger.LogInfo("Loading WorkerNPC mod...");
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             HarmonyInstance.PatchAll(assembly);
