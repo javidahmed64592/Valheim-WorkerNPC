@@ -11,6 +11,7 @@ namespace WorkerNPC
         public static string description = "A chest for storing items. Can be used by workers.";
         public static string pieceTable = PieceTables.Hammer;
         public static string prefabName = "piece_chest_wood";
+        public static string customName = "worker_chest";
         public static string buildCategory = "Workers";
 
         public static void RegisterWorkerChest()
@@ -32,7 +33,15 @@ namespace WorkerNPC
 
         private static GameObject GetBaseChest()
         {
-            return PrefabManager.Instance.GetPrefab(prefabName);
+            GameObject clonedChest = PrefabManager.Instance.CreateClonedPrefab(customName, prefabName);
+
+            if (clonedChest == null)
+            {
+                Jotunn.Logger.LogError("Base chest prefab not found!");
+                return null;
+            }
+
+            return clonedChest;
         }
     }
 }

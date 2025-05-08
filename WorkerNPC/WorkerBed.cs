@@ -11,6 +11,7 @@ namespace WorkerNPC
         public static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
         public static string pieceTable = PieceTables.Hammer;
         public static string prefabName = "bed";
+        public static string customName = "worker_bed";
         public static string buildCategory = "Workers";
 
         public static void RegisterWorkerBed()
@@ -20,12 +21,6 @@ namespace WorkerNPC
             PrefabManager.OnVanillaPrefabsAvailable += () =>
             {
                 GameObject bedObject = GetBaseBed();
-                if (bedObject == null)
-                {
-                    Jotunn.Logger.LogError("Base bed prefab not found!");
-                    return;
-                }
-
                 bedObject.AddComponent<WorkerBedBehavior>();
 
                 PieceConfig bed = new PieceConfig
@@ -43,7 +38,15 @@ namespace WorkerNPC
 
         private static GameObject GetBaseBed()
         {
-            return PrefabManager.Instance.GetPrefab(prefabName);
+            GameObject clonedBed = PrefabManager.Instance.CreateClonedPrefab(customName, prefabName);
+
+            if (clonedBed == null)
+            {
+                Jotunn.Logger.LogError("Base bed prefab not found!");
+                return null;
+            }
+
+            return clonedBed;
         }
     }
 
@@ -54,6 +57,12 @@ namespace WorkerNPC
 
         private void Start()
         {
+            Piece piece = GetComponent<Piece>();
+            if (piece == null || !piece.IsPlacedByPlayer())
+            {
+                return;
+            }
+
             SpawnWorkerNPC();
         }
 
@@ -72,7 +81,7 @@ namespace WorkerNPC
                 return;
             }
 
-            workerNPC = Instantiate(dvergrPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+            workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);
             Jotunn.Logger.LogInfo("Worker NPC spawned successfully.");
         }
 
