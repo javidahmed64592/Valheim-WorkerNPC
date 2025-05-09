@@ -68,10 +68,6 @@ namespace WorkerNPC
         public static string prefabName = "Dverger";
         public static string customName = "worker_npc";
 
-        // Inventory
-        public static string inventoryKey = "worker_npc_inventory";
-        public static int maxInventorySize = 50;
-
         private void Start()
         {
             Piece piece = GetComponent<Piece>();
@@ -83,7 +79,7 @@ namespace WorkerNPC
             ZNetView bedView = GetComponent<ZNetView>();
             if (bedView == null || !bedView.IsValid())
             {
-                Jotunn.Logger.LogError("ZNetView missing—cannot track Worker NPC state.");
+                Jotunn.Logger.LogError("ZNetView missing — cannot track Worker NPC state.");
                 return;
             }
 
@@ -99,7 +95,7 @@ namespace WorkerNPC
 
             if (npcFound)
             {
-                Jotunn.Logger.LogInfo("Worker NPC already exists—skipping spawn.");
+                Jotunn.Logger.LogInfo("Worker NPC already exists — skipping spawn.");
                 return;
             }
 
@@ -125,6 +121,11 @@ namespace WorkerNPC
                 return;
             }
 
+            if (dvergrPrefab.GetComponent<NPCBehaviour>() == null)
+            {
+                dvergrPrefab.AddComponent<NPCBehaviour>();
+            }
+
             workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);
             workerNPC.transform.parent = transform;
         }
@@ -136,49 +137,6 @@ namespace WorkerNPC
                 ZNetScene.instance.Destroy(workerNPC);
                 Jotunn.Logger.LogInfo("Worker NPC removed.");
             }
-        }
-
-        private void AddItemToInventory(string itemName, int amount)
-        {
-            ZNetView bedView = GetComponent<ZNetView>();
-            if (bedView == null || !bedView.IsValid())
-            {
-                Jotunn.Logger.LogError("ZNetView missing—cannot modify Worker NPC inventory.");
-                return;
-            }
-
-            string inventoryData = bedView.GetZDO().GetString(inventoryKey, $"{itemName}:0");
-            int currentAmount = int.Parse(inventoryData.Split(':')[1]);
-
-            int newAmount = currentAmount + amount;
-            bedView.GetZDO().Set("worker_npc_inventory", $"{itemName}:{newAmount}");
-
-            Jotunn.Logger.LogInfo($"Added {amount} {itemName} to Worker NPC's inventory (Total: {newAmount}).");
-        }
-
-        private bool UseItemFromInventory(string itemName, int amount)
-        {
-            ZNetView bedView = GetComponent<ZNetView>();
-            if (bedView == null || !bedView.IsValid())
-            {
-                Jotunn.Logger.LogError("ZNetView missing—cannot modify Worker NPC inventory.");
-                return false;
-            }
-
-            string inventoryData = bedView.GetZDO().GetString(inventoryKey, $"{itemName}:0");
-            int currentAmount = int.Parse(inventoryData.Split(':')[1]);
-
-            if (currentAmount < amount)
-            {
-                Jotunn.Logger.LogWarning($"Worker NPC does not have enough {itemName} (Has: {currentAmount}, Needs: {amount}).");
-                return false;
-            }
-
-            int newAmount = currentAmount - amount;
-            bedView.GetZDO().Set("worker_npc_inventory", $"{itemName}:{newAmount}");
-
-            Jotunn.Logger.LogInfo($"Used {amount} {itemName} from Worker NPC's inventory (Remaining: {newAmount}).");
-            return true;
         }
     }
 }
