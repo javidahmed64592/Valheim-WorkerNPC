@@ -2,7 +2,6 @@
 using Jotunn.Configs;
 using Jotunn.Entities;
 using UnityEngine;
-using JetBrains.Annotations;
 
 namespace WorkerNPC
 {
@@ -10,10 +9,10 @@ namespace WorkerNPC
     {
         public static string displayName = "Worker Bed";
         public static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
-        public static string pieceTable = PieceTables.Hammer;
         public static string prefabName = "bed";
         public static string customName = "worker_bed";
-        public static string buildCategory = "Workers";
+        public static string pieceTable = GlobalConfig.pieceTable;
+        public static string buildCategory = GlobalConfig.buildCategory;
 
         public static void RegisterWorkerBed()
         {
@@ -68,7 +67,7 @@ namespace WorkerNPC
         private GameObject workerNPC;
         public static string prefabName = "Dverger";
         public static string customName = "worker_npc";
-
+        
         // Inventory
         public static string inventoryKey = "worker_npc_inventory";
         public static int maxInventorySize = 50;
@@ -180,6 +179,29 @@ namespace WorkerNPC
 
             Jotunn.Logger.LogInfo($"Used {amount} {itemName} from Worker NPC's inventory (Remaining: {newAmount}).");
             return true;
+        }
+
+        private float inventoryUpdateTimer = 0f;
+        private float updateInterval = 5f; // Every 5 seconds
+        private System.Random random = new System.Random();
+
+        private void Update()
+        {
+            inventoryUpdateTimer += Time.deltaTime;
+
+            if (inventoryUpdateTimer >= updateInterval)
+            {
+                inventoryUpdateTimer = 0f; // Reset timer
+
+                int addAmount = random.Next(1, 10); // Random resin amount to add
+                AddItemToInventory("Resin", addAmount);
+
+                int useAmount = random.Next(1, 10); // Random resin amount to use
+                bool success = UseItemFromInventory("Resin", useAmount);
+
+                string status = success ? "Success" : "Failed (Not enough resin)";
+                Jotunn.Logger.LogInfo($"Attempted to use {useAmount} Resin - {status}");
+            }
         }
     }
 }

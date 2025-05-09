@@ -9,10 +9,10 @@ namespace WorkerNPC
     {
         public static string displayName = "Worker Chest";
         public static string description = "A chest for storing items. Can be used by workers.";
-        public static string pieceTable = PieceTables.Hammer;
         public static string prefabName = "piece_chest_wood";
         public static string customName = "worker_chest";
-        public static string buildCategory = "Workers";
+        public static string pieceTable = GlobalConfig.pieceTable;
+        public static string buildCategory = GlobalConfig.buildCategory;
 
         public static void RegisterWorkerChest()
         {

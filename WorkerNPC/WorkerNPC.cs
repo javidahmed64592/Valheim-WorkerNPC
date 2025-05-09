@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Jotunn.Configs;
 using Jotunn.Utils;
 using System.Reflection;
 
@@ -34,5 +35,11 @@ namespace WorkerNPC
             // Add chest to build menu in Misc tab
             WorkerChest.RegisterWorkerChest();
         }
+    }
+
+    public static class GlobalConfig
+    {
+        public static string pieceTable = PieceTables.Hammer;
+        public static string buildCategory = "Workers";
     }
 }
