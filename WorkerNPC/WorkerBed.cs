@@ -76,13 +76,6 @@ namespace WorkerNPC
                 return;
             }
 
-            ZNetView bedView = GetComponent<ZNetView>();
-            if (bedView == null || !bedView.IsValid())
-            {
-                Jotunn.Logger.LogError("ZNetView missing — cannot track Worker NPC state.");
-                return;
-            }
-
             bool npcFound = false;
             foreach (Transform child in transform)
             {
