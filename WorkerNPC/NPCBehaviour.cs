@@ -9,9 +9,9 @@ namespace WorkerNPC
         public int maxInventorySize = 50;
         public string inventoryItem = "Resin";
 
-        private void Awake()
+        private void Start()
         {
-            zNetView = GetComponent<ZNetView>();
+            zNetView = transform.parent.GetComponent<ZNetView>();
             if (zNetView == null)
             {
                 Jotunn.Logger.LogError("Failed to get ZNetView component.");
@@ -31,7 +31,7 @@ namespace WorkerNPC
             int currentAmount = int.Parse(inventoryData.Split(':')[1]);
 
             int newAmount = currentAmount + amount;
-            zNetView.GetZDO().Set("worker_npc_inventory", $"{itemName}:{newAmount}");
+            zNetView.GetZDO().Set(inventoryKey, $"{itemName}:{newAmount}");
 
             Jotunn.Logger.LogInfo($"Added {amount} {itemName} to Worker NPC's inventory (Total: {newAmount}).");
         }
@@ -54,7 +54,7 @@ namespace WorkerNPC
             }
 
             int newAmount = currentAmount - amount;
-            zNetView.GetZDO().Set("worker_npc_inventory", $"{itemName}:{newAmount}");
+            zNetView.GetZDO().Set(inventoryKey, $"{itemName}:{newAmount}");
 
             Jotunn.Logger.LogInfo($"Used {amount} {itemName} from Worker NPC's inventory (Remaining: {newAmount}).");
             return true;
