@@ -87,13 +87,7 @@ namespace WorkerNPC
                 float distance = Vector3.Distance(chest.transform.position, bedPosition);
                 if (distance > searchRadius) continue;
 
-                Container chestContainer = chest.gameObject.GetComponent<Container>();
-                if (chestContainer == null) continue;
-
-                Inventory chestInventory = chestContainer.GetInventory();
-
-                int items = chestInventory.CountItems(requiredItem);
-                if (items > 0)
+                if (chest.CountItems(requiredItem) > 0)
                 {
                     workerChests.Add(chest.gameObject);
                 }

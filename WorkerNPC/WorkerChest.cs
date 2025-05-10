@@ -53,6 +53,16 @@ namespace WorkerNPC
 
     internal class WorkerChestBehaviour : MonoBehaviour
     {
+        public int CountItems(string itemName)
+        {
+            Inventory chestInventory = transform.gameObject.GetComponent<Container>().GetInventory();
+            if (chestInventory == null)
+            {
+                Jotunn.Logger.LogError("Chest inventory is missing.");
+                return 0;
+            }
 
+            return chestInventory.CountItems(itemName);
+        }
     }
 }
