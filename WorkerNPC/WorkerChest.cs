@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace WorkerNPC
 {
-    public static class WorkerChest
+    internal static class WorkerChest
     {
-        public static string displayName = "Worker Chest";
-        public static string description = "A chest for storing items. Can be used by workers.";
-        public static string prefabName = "piece_chest_wood";
-        public static string customName = "worker_chest";
-        public static string pieceTable = GlobalConfig.pieceTable;
-        public static string buildCategory = GlobalConfig.buildCategory;
+        static string displayName = "Worker Chest";
+        static string description = "A chest for storing items. Can be used by workers.";
+        static string prefabName = "piece_chest_wood";
+        static string customName = "worker_chest";
+        static string pieceTable = GlobalConfig.pieceTable;
+        static string buildCategory = GlobalConfig.buildCategory;
 
         public static void RegisterWorkerChest()
         {

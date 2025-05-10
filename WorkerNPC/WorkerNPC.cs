@@ -9,7 +9,7 @@ namespace WorkerNPC
 {
     [BepInPlugin(pluginGUID, pluginName, pluginVersion)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
-    public class Main : BaseUnityPlugin
+    internal class Main : BaseUnityPlugin
     {
         const string pluginGUID = "com.example.GUID";
         const string pluginName = "WorkerNPC";
@@ -37,7 +37,7 @@ namespace WorkerNPC
         }
     }
 
-    public static class GlobalConfig
+    internal static class GlobalConfig
     {
         public static string pieceTable = PieceTables.Hammer;
         public static string buildCategory = "Workers";

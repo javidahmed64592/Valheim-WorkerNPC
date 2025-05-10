@@ -2,12 +2,12 @@
 
 namespace WorkerNPC
 {
-    public class NPCBehaviour : MonoBehaviour
+    internal class NPCBehaviour : MonoBehaviour
     {
-        public ZNetView zNetView;
-        public string inventoryKey = "worker_npc_inventory";
-        public int maxInventorySize = 50;
-        public string inventoryItem = "Resin";
+        ZNetView zNetView;
+        string inventoryKey = "worker_npc_inventory";
+        int maxInventorySize = 50;
+        string inventoryItem = "Resin";
 
         private void Start()
         {

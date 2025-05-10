@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace WorkerNPC
 {
-    public static class WorkerBed
+    internal static class WorkerBed
     {
-        public static string displayName = "Worker Bed";
-        public static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
-        public static string prefabName = "bed";
-        public static string customName = "worker_bed";
-        public static string pieceTable = GlobalConfig.pieceTable;
-        public static string buildCategory = GlobalConfig.buildCategory;
+        static string displayName = "Worker Bed";
+        static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
+        static string prefabName = "bed";
+        static string customName = "worker_bed";
+        static string pieceTable = GlobalConfig.pieceTable;
+        static string buildCategory = GlobalConfig.buildCategory;
 
         public static void RegisterWorkerBed()
         {
@@ -62,11 +62,11 @@ namespace WorkerNPC
         }
     }
 
-    public class WorkerBedBehavior : MonoBehaviour
+    internal class WorkerBedBehavior : MonoBehaviour
     {
-        private GameObject workerNPC;
-        public static string prefabName = "Dverger";
-        public static string customName = "worker_npc";
+        GameObject workerNPC;
+        string prefabName = "Dverger";
+        string customName = "worker_npc";
 
         private void Start()
         {
