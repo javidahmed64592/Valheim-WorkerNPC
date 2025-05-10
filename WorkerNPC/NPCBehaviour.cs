@@ -1,13 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace WorkerNPC
 {
     internal class NPCBehaviour : MonoBehaviour
     {
         ZNetView zNetView;
+
+        // Inventory
         string inventoryKey = "worker_npc_inventory";
         int maxInventorySize = 50;
         string inventoryItem = "Resin";
+
+        // Searching for resources
+        float searchRadius = 10f;
+        float searchTimer = 0f;
+        float searchInterval = 10f;
 
         private void Start()
         {
@@ -59,5 +67,75 @@ namespace WorkerNPC
             Jotunn.Logger.LogInfo($"Used {amount} {itemName} from Worker NPC's inventory (Remaining: {newAmount}).");
             return true;
         }
+
+        private List<GameObject> FindNearbyWorkerChests(float searchRadius)
+        {
+            List<GameObject> workerChests = new List<GameObject>();
+
+            if (transform.parent == null)
+            {
+                Jotunn.Logger.LogWarning("NPC has no parent object—cannot find nearby Worker Chests.");
+                return workerChests;
+            }
+
+            Vector3 bedPosition = transform.parent.position;
+
+            WorkerChestBehaviour[] allChests = FindObjectsOfType<WorkerChestBehaviour>();
+
+            foreach (WorkerChestBehaviour chest in allChests)
+            {
+                float distance = Vector3.Distance(chest.transform.position, bedPosition);
+                if (distance <= searchRadius)
+                {
+                    // Check if chest has any of required item
+                    workerChests.Add(chest.gameObject);
+                }
+            }
+
+            return workerChests;
+        }
+
+        private List<GameObject> FindNearbyResource<T>(float searchRadius) where T : MonoBehaviour
+        {
+            List<GameObject> resources = new List<GameObject>();
+
+            if (transform.parent == null)
+            {
+                Jotunn.Logger.LogWarning("NPC has no parent object — cannot find nearby resources.");
+                return resources;
+            }
+
+            Vector3 bedPosition = transform.parent.position;
+
+            T[] allResources = FindObjectsOfType<T>();
+
+            foreach (T resource in allResources)
+            {
+                float distance = Vector3.Distance(resource.transform.position, bedPosition);
+                if (distance <= searchRadius)
+                {
+                    resources.Add(resource.gameObject);
+                }
+            }
+
+            return resources;
+        }
+
+        private void Update()
+        {
+            searchTimer += Time.deltaTime;
+
+            if (searchTimer >= searchInterval)
+            {
+                searchTimer = 0f;
+
+                List<GameObject> nearbyChests = FindNearbyWorkerChests(searchRadius);
+                Jotunn.Logger.LogInfo($"NPC scanned for chests and found {nearbyChests.Count} in range.");
+
+                List<GameObject> nearbyTorches = FindNearbyResource<Fireplace>(10f);
+                Jotunn.Logger.LogInfo($"NPC scanned for torches and found {nearbyTorches.Count} in range.");
+            }
+        }
+
     }
 }
