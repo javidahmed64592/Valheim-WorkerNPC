@@ -11,7 +11,7 @@ namespace WorkerNPC
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     internal class Main : BaseUnityPlugin
     {
-        const string pluginGUID = "com.example.GUID";
+        const string pluginGUID = "com.javidahmed64592.valheim.worker-npc";
         const string pluginName = "WorkerNPC";
         const string pluginVersion = "0.1.0";
 
