@@ -21,6 +21,7 @@ namespace WorkerNPC
             void CreateChest()
             {
                 GameObject chestObject = GetBaseChest();
+                chestObject.tag = customName;
                 PieceConfig chest = new PieceConfig
                 {
                     Name = displayName,
