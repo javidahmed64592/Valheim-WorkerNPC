@@ -22,7 +22,6 @@ namespace WorkerNPC
             {
                 GameObject bedObject = GetBaseBed();
                 bedObject.AddComponent<WorkerBedBehavior>();
-                bedObject.tag = customName;
 
                 PieceConfig bed = new PieceConfig
                 {
@@ -119,8 +118,6 @@ namespace WorkerNPC
             {
                 dvergrPrefab.AddComponent<NPCBehaviour>();
             }
-
-            dvergrPrefab.tag = customName;
 
             workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);
             workerNPC.transform.parent = transform;

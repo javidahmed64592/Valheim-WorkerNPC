@@ -21,7 +21,7 @@ namespace WorkerNPC
             void CreateChest()
             {
                 GameObject chestObject = GetBaseChest();
-                chestObject.tag = customName;
+                chestObject.AddComponent<WorkerChestBehaviour>();
                 PieceConfig chest = new PieceConfig
                 {
                     Name = displayName,
@@ -49,5 +49,10 @@ namespace WorkerNPC
 
             return clonedChest;
         }
+    }
+
+    internal class WorkerChestBehaviour : MonoBehaviour
+    {
+
     }
 }
