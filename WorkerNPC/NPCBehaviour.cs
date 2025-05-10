@@ -10,7 +10,7 @@ namespace WorkerNPC
         // Inventory
         string inventoryKey = "worker_npc_inventory";
         int maxInventorySize = 50;
-        string inventoryItem = "Resin";
+        string inventoryItem = "$item_resin";
 
         // Searching for resources
         float searchRadius = 10f;
@@ -68,13 +68,13 @@ namespace WorkerNPC
             return true;
         }
 
-        private List<GameObject> FindNearbyWorkerChests(float searchRadius)
+        private List<GameObject> FindNearbyWorkerChests(float searchRadius, string requiredItem)
         {
             List<GameObject> workerChests = new List<GameObject>();
 
             if (transform.parent == null)
             {
-                Jotunn.Logger.LogWarning("NPC has no parent object—cannot find nearby Worker Chests.");
+                Jotunn.Logger.LogWarning("NPC has no parent object — cannot find nearby Worker Chests.");
                 return workerChests;
             }
 
@@ -85,9 +85,16 @@ namespace WorkerNPC
             foreach (WorkerChestBehaviour chest in allChests)
             {
                 float distance = Vector3.Distance(chest.transform.position, bedPosition);
-                if (distance <= searchRadius)
+                if (distance > searchRadius) continue;
+
+                Container chestContainer = chest.gameObject.GetComponent<Container>();
+                if (chestContainer == null) continue;
+
+                Inventory chestInventory = chestContainer.GetInventory();
+
+                int items = chestInventory.CountItems(requiredItem);
+                if (items > 0)
                 {
-                    // Check if chest has any of required item
                     workerChests.Add(chest.gameObject);
                 }
             }
@@ -129,10 +136,10 @@ namespace WorkerNPC
             {
                 searchTimer = 0f;
 
-                List<GameObject> nearbyChests = FindNearbyWorkerChests(searchRadius);
+                List<GameObject> nearbyChests = FindNearbyWorkerChests(searchRadius, inventoryItem);
                 Jotunn.Logger.LogInfo($"NPC scanned for chests and found {nearbyChests.Count} in range.");
 
-                List<GameObject> nearbyTorches = FindNearbyResource<Fireplace>(10f);
+                List<GameObject> nearbyTorches = FindNearbyResource<Fireplace>(searchRadius);
                 Jotunn.Logger.LogInfo($"NPC scanned for torches and found {nearbyTorches.Count} in range.");
             }
         }
