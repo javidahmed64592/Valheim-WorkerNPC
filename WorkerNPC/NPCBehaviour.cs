@@ -27,6 +27,21 @@ namespace WorkerNPC
             }
         }
 
+        private int CheckInventory(string itemName)
+        {
+            if (zNetView == null || !zNetView.IsValid())
+            {
+                Jotunn.Logger.LogError("ZNetView missing — cannot check Worker NPC inventory.");
+                return 0;
+            }
+
+            string inventoryData = zNetView.GetZDO().GetString(inventoryKey, $"{itemName}:0");
+            int currentAmount = int.Parse(inventoryData.Split(':')[1]);
+
+            Jotunn.Logger.LogInfo($"Worker NPC has {currentAmount} {itemName} in inventory.");
+            return currentAmount;
+        }
+
         private void AddItemToInventory(string itemName, int amount)
         {
             if (zNetView == null || !zNetView.IsValid())
@@ -55,6 +70,7 @@ namespace WorkerNPC
             string inventoryData = zNetView.GetZDO().GetString(inventoryKey, $"{itemName}:0");
             int currentAmount = int.Parse(inventoryData.Split(':')[1]);
 
+            // TODO: Update this to just use the maximum available amount
             if (currentAmount < amount)
             {
                 Jotunn.Logger.LogWarning($"Worker NPC does not have enough {itemName} (Has: {currentAmount}, Needs: {amount}).");
@@ -130,13 +146,27 @@ namespace WorkerNPC
             {
                 searchTimer = 0f;
 
-                List<GameObject> nearbyChests = FindNearbyWorkerChests(searchRadius, inventoryItem);
-                Jotunn.Logger.LogInfo($"NPC scanned for chests and found {nearbyChests.Count} in range.");
+                int currentStock = CheckInventory(inventoryItem);
+                int requestedAmount = maxInventorySize - currentStock;
+
+                if (requestedAmount > 0)
+                {
+                    List<GameObject> nearbyChests = FindNearbyWorkerChests(searchRadius, inventoryItem);
+                    Jotunn.Logger.LogInfo($"NPC scanned for chests and found {nearbyChests.Count} in range.");
+
+                    if (nearbyChests.Count > 0)
+                    {
+                        // TODO: Walk to first chest
+                        int amountTakenFromChest = nearbyChests[0].GetComponent<WorkerChestBehaviour>().TakeItem(inventoryItem, requestedAmount);
+                        AddItemToInventory(inventoryItem, amountTakenFromChest);
+                    }
+                }
 
                 List<GameObject> nearbyTorches = FindNearbyResource<Fireplace>(searchRadius);
                 Jotunn.Logger.LogInfo($"NPC scanned for torches and found {nearbyTorches.Count} in range.");
+
+                // TODO: When found torches, go to each one and fill em up!
             }
         }
-
     }
 }

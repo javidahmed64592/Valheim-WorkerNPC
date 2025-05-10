@@ -53,9 +53,21 @@ namespace WorkerNPC
 
     internal class WorkerChestBehaviour : MonoBehaviour
     {
+        Container chestContainer;
+
+        private void Start()
+        {
+            chestContainer = GetComponent<Container>();
+            if (chestContainer == null)
+            {
+                Jotunn.Logger.LogError("Failed to get Container component.");
+                return;
+            }
+        }
+
         public int CountItems(string itemName)
         {
-            Inventory chestInventory = transform.gameObject.GetComponent<Container>().GetInventory();
+            Inventory chestInventory = chestContainer.GetInventory();
             if (chestInventory == null)
             {
                 Jotunn.Logger.LogError("Chest inventory is missing.");
@@ -63,6 +75,22 @@ namespace WorkerNPC
             }
 
             return chestInventory.CountItems(itemName);
+        }
+
+        public int TakeItem(string itemName, int amount)
+        {
+            Inventory chestInventory = chestContainer.GetInventory();
+            int itemCount = CountItems(itemName);
+            if (itemCount < 0)
+            {
+                Jotunn.Logger.LogWarning($"Chest has no {itemName}.");
+                return 0;
+            }
+
+            int availableAmount = Mathf.Min(itemCount, amount);
+            // TODO: Remove items from the chest
+            Jotunn.Logger.LogInfo($"Taking {availableAmount} {itemName} from chest.");
+            return availableAmount;
         }
     }
 }
