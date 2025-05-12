@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace WorkerNPC
 {
-    internal static class WorkerChest
+    internal static class WorkerSupplyChest
     {
-        static string displayName = "Worker Chest";
-        static string description = "A chest for storing items. Can be used by workers.";
+        static string displayName = "Supply Chest";
+        static string description = "Workers withdraw items from this chest.";
         static string prefabName = "piece_chest_wood";
-        static string customName = "worker_chest";
+        static string customName = "worker_supply_chest";
         static string pieceTable = GlobalConfig.pieceTable;
         static string buildCategory = GlobalConfig.buildCategory;
 
@@ -21,7 +21,7 @@ namespace WorkerNPC
             void CreateChest()
             {
                 GameObject chestObject = GetBaseChest();
-                chestObject.AddComponent<WorkerChestBehaviour>();
+                chestObject.AddComponent<WorkerSupplyChestBehaviour>();
                 PieceConfig chest = new PieceConfig
                 {
                     Name = displayName,
@@ -51,7 +51,7 @@ namespace WorkerNPC
         }
     }
 
-    internal class WorkerChestBehaviour : MonoBehaviour
+    internal class WorkerSupplyChestBehaviour : MonoBehaviour
     {
         Container chestContainer;
 

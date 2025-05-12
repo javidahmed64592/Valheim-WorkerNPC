@@ -33,7 +33,7 @@ namespace WorkerNPC
             WorkerBed.RegisterWorkerBed();
 
             // Add chest to build menu in Misc tab
-            WorkerChest.RegisterWorkerChest();
+            WorkerSupplyChest.RegisterWorkerChest();
         }
     }
 

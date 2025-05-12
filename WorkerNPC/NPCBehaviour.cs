@@ -87,9 +87,9 @@ namespace WorkerNPC
 
             Vector3 bedPosition = transform.parent.position;
 
-            WorkerChestBehaviour[] allChests = FindObjectsOfType<WorkerChestBehaviour>();
+            WorkerSupplyChestBehaviour[] allChests = FindObjectsOfType<WorkerSupplyChestBehaviour>();
 
-            foreach (WorkerChestBehaviour chest in allChests)
+            foreach (WorkerSupplyChestBehaviour chest in allChests)
             {
                 float distance = Vector3.Distance(chest.transform.position, bedPosition);
                 if (distance > searchRadius) continue;
@@ -159,7 +159,7 @@ namespace WorkerNPC
                     Jotunn.Logger.LogInfo($"NPC found {nearbyChests.Count} nearby chests. Going to first available one...");
 
                     int requestedAmount = maxInventorySize - currentStock;
-                    int amountTakenFromChest = nearbyChests[0].GetComponent<WorkerChestBehaviour>().TakeItem(inventoryItem, requestedAmount);
+                    int amountTakenFromChest = nearbyChests[0].GetComponent<WorkerSupplyChestBehaviour>().TakeItem(inventoryItem, requestedAmount);
                     Jotunn.Logger.LogInfo($"NPC took {amountTakenFromChest} {inventoryItem} from chest.");
                     int amountAddedToInv = AddItemToInventory(inventoryItem, amountTakenFromChest);
                     Jotunn.Logger.LogInfo($"NPC added {amountAddedToInv} {inventoryItem} to inventory.");

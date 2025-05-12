@@ -91,7 +91,7 @@
   <ItemGroup>
     <Compile Include="NPCBehaviour.cs" />
     <Compile Include="WorkerBed.cs" />
-    <Compile Include="WorkerChest.cs" />
+    <Compile Include="WorkerSupplyChest.cs" />
     <Compile Include="WorkerNPC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
