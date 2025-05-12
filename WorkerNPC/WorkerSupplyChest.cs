@@ -88,8 +88,7 @@ namespace WorkerNPC
             }
 
             int availableAmount = Mathf.Min(itemCount, amount);
-            // TODO: Remove items from the chest
-            Jotunn.Logger.LogInfo($"Taking {availableAmount} {itemName} from chest.");
+            chestInventory.RemoveItem(itemName, availableAmount);
             return availableAmount;
         }
     }
