@@ -175,7 +175,15 @@ namespace WorkerNPC
                         ZNetView torchView = torch.GetComponent<ZNetView>();
                         int currentFuel = Mathf.CeilToInt(torchView.GetZDO().GetFloat(ZDOVars.s_fuel));
                         int maxFuel = (int)torch.m_maxFuel;
-                        int amountToUse = UseItemFromInventory(inventoryItem, maxFuel - currentFuel);
+
+                        int fuelNeeded = maxFuel - currentFuel;
+                        if (fuelNeeded <= 0)
+                        {
+                            Jotunn.Logger.LogInfo($"Torch {torch.name} is already full.");
+                            continue;
+                        }
+
+                        int amountToUse = UseItemFromInventory(inventoryItem, fuelNeeded);
                         if (amountToUse > 0)
                         {
                             torch.AddFuel(amountToUse);
