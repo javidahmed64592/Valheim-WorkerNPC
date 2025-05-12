@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Jotunn;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace WorkerNPC
@@ -138,8 +139,6 @@ namespace WorkerNPC
                 Jotunn.Logger.LogInfo("NPC STARTING JOB...");
                 searchTimer = 0f;
 
-                // While there are torches to refuel, do the following loop
-
                 // If NPC has nothing in inventory, check for nearby chests
                 int currentStock = CheckInventory(inventoryItem);
                 Jotunn.Logger.LogInfo($"NPC inventory has {currentStock} {inventoryItem}.");
@@ -165,13 +164,30 @@ namespace WorkerNPC
                     Jotunn.Logger.LogInfo($"NPC added {amountAddedToInv} {inventoryItem} to inventory.");
                 }
 
-                // TODO: FINISH THIS LOOP
-                // Get all the nearby torches
                 // While NPC has items in inventory, do the job!
                 List<Fireplace> nearbyTorches = FindNearbyResource<Fireplace>(searchRadius);
                 Jotunn.Logger.LogInfo($"NPC scanned for torches and found {nearbyTorches.Count} in range.");
 
-                // TODO: When found torches, go to each one and fill em up!
+                foreach (Fireplace torch in nearbyTorches)
+                {
+                    if (torch.m_fuelItem.TokenName() == inventoryItem)
+                    {
+                        ZNetView torchView = torch.GetComponent<ZNetView>();
+                        int currentFuel = Mathf.CeilToInt(torchView.GetZDO().GetFloat(ZDOVars.s_fuel));
+                        int maxFuel = (int)torch.m_maxFuel;
+                        int amountToUse = UseItemFromInventory(inventoryItem, maxFuel - currentFuel);
+                        if (amountToUse > 0)
+                        {
+                            torch.AddFuel(amountToUse);
+                            Jotunn.Logger.LogInfo($"NPC refueled {torch.name} with {amountToUse} {inventoryItem}.");
+                        }
+                        else
+                        {
+                            Jotunn.Logger.LogInfo($"NPC has no {inventoryItem} left in inventory.");
+                            break;
+                        }
+                    }
+                }
 
                 Jotunn.Logger.LogInfo("NPC FINISHING JOB...");
             }
