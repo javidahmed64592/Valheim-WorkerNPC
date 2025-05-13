@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="NPCBehaviour.cs" />
     <Compile Include="WorkerBed.cs" />
     <Compile Include="WorkerSupplyChest.cs" />

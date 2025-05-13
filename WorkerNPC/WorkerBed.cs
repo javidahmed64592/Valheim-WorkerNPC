@@ -7,12 +7,12 @@ namespace WorkerNPC
 {
     internal static class WorkerBed
     {
-        static string displayName = "Worker Bed";
-        static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
-        static string prefabName = "bed";
-        static string customName = "worker_bed";
-        static string pieceTable = GlobalConfig.pieceTable;
-        static string buildCategory = GlobalConfig.buildCategory;
+        static string displayName = BedConfig.displayName;
+        static string description = BedConfig.description;
+        static string prefabName = BedConfig.prefabName;
+        static string customName = BedConfig.customName;
+        static string pieceTable = BuildMenuConfig.pieceTable;
+        static string buildCategory = BuildMenuConfig.buildCategory;
 
         public static void RegisterWorkerBed()
         {
@@ -65,8 +65,8 @@ namespace WorkerNPC
     internal class WorkerBedBehavior : MonoBehaviour
     {
         GameObject workerNPC;
-        string prefabName = "Dverger";
-        string customName = "worker_npc";
+        string prefabName = WorkerNPCConfig.prefabName;
+        string customName = WorkerNPCConfig.customName;
 
         private void Start()
         {

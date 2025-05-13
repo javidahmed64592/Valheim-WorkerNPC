@@ -1,0 +1,41 @@
+﻿using Jotunn.Configs;
+
+namespace WorkerNPC
+{
+    internal class BuildMenuConfig
+    {
+        public static string pieceTable = PieceTables.Hammer;
+        public static string buildCategory = "Workers";
+    }
+
+    internal class BedConfig
+    {
+        public static string displayName = "Worker Bed";
+        public static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
+        public static string prefabName = "bed";
+        public static string customName = "worker_bed";
+    }
+    
+    internal class SupplyChestConfig
+    {
+        public static string displayName = "Supply Chest";
+        public static string description = "Workers withdraw items from this chest.";
+        public static string prefabName = "piece_chest_wood";
+        public static string customName = "worker_supply_chest";
+    }
+
+    internal class WorkerNPCConfig
+    {
+        public static string prefabName = "Dverger";
+        public static string customName = "worker_npc";
+        public static string inventoryKey = "worker_npc_inventory";
+    }
+
+    internal class ResinWorkerConfig
+    {
+        public static int maxInventorySize = 50;
+        public static string inventoryItem = "$item_resin";
+        public static float searchRadius = 10f;
+        public static float searchInterval = 10f;
+    }
+}

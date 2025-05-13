@@ -7,12 +7,12 @@ namespace WorkerNPC
 {
     internal static class WorkerSupplyChest
     {
-        static string displayName = "Supply Chest";
-        static string description = "Workers withdraw items from this chest.";
-        static string prefabName = "piece_chest_wood";
-        static string customName = "worker_supply_chest";
-        static string pieceTable = GlobalConfig.pieceTable;
-        static string buildCategory = GlobalConfig.buildCategory;
+        static string displayName = SupplyChestConfig.displayName;
+        static string description = SupplyChestConfig.description;
+        static string prefabName = SupplyChestConfig.prefabName;
+        static string customName = SupplyChestConfig.customName;
+        static string pieceTable = BuildMenuConfig.pieceTable;
+        static string buildCategory = BuildMenuConfig.buildCategory;
 
         public static void RegisterWorkerChest()
         {
