@@ -42,19 +42,15 @@ namespace WorkerNPC
 
     internal class NPCBehaviour : MonoBehaviour
     {
-        ZNetView zNetView;
+        internal ZNetView zNetView;
         float jobTimer = 0f;
+        float jobInterval = 10f;
 
         // Inventory
-        string inventoryKey = ResinWorkerConfig.inventoryKey;
-        int maxInventorySize = ResinWorkerConfig.maxInventorySize;
-        string inventoryItem = ResinWorkerConfig.inventoryItem;
+        string inventoryKey = WorkerNPCConfig.inventoryKey;
+        int maxInventorySize = 50;
 
-        // Searching for resources
-        float searchRadius = ResinWorkerConfig.searchRadius;
-        float searchInterval = ResinWorkerConfig.searchInterval;
-
-        private void Start()
+        internal void Start()
         {
             zNetView = transform.parent.GetComponent<ZNetView>();
             if (zNetView == null)
@@ -64,7 +60,7 @@ namespace WorkerNPC
             }
         }
 
-        private int CheckInventory(string itemName)
+        internal int CheckInventory(string itemName)
         {
             if (zNetView == null || !zNetView.IsValid())
             {
@@ -78,7 +74,7 @@ namespace WorkerNPC
             return currentAmount;
         }
 
-        private int AddItemToInventory(string itemName, int amountRequested)
+        internal int AddItemToInventory(string itemName, int amountRequested)
         {
             if (zNetView == null || !zNetView.IsValid())
             {
@@ -95,7 +91,7 @@ namespace WorkerNPC
             return amountToAdd;
         }
 
-        private int UseItemFromInventory(string itemName, int amountRequested)
+        internal int UseItemFromInventory(string itemName, int amountRequested)
         {
             if (zNetView == null || !zNetView.IsValid())
             {
@@ -112,7 +108,7 @@ namespace WorkerNPC
             return amountToUse;
         }
 
-        private List<WorkerSupplyChestBehaviour> FindNearbySupplyChests(float searchRadius, string requiredItem)
+        internal List<WorkerSupplyChestBehaviour> FindNearbySupplyChests(float searchRadius, string requiredItem)
         {
             List<WorkerSupplyChestBehaviour> workerChests = new List<WorkerSupplyChestBehaviour>();
 
@@ -140,7 +136,7 @@ namespace WorkerNPC
             return workerChests;
         }
 
-        private List<T> FindNearbyResource<T>(float searchRadius) where T : MonoBehaviour
+        internal List<T> FindNearbyResource<T>(float searchRadius) where T : MonoBehaviour
         {
             List<T> resources = new List<T>();
 
@@ -166,74 +162,16 @@ namespace WorkerNPC
             return resources;
         }
 
-        private void DoJob()
+        internal virtual void DoJob()
         {
-            // If NPC has nothing in inventory, check for nearby chests
-            int currentStock = CheckInventory(inventoryItem);
-            Jotunn.Logger.LogInfo($"NPC inventory has {currentStock} {inventoryItem}.");
-            if (currentStock == 0)
-            {
-                Jotunn.Logger.LogInfo("NPC is searching for nearby chests...");
-                List<WorkerSupplyChestBehaviour> nearbyChests = FindNearbySupplyChests(searchRadius, inventoryItem);
-
-                // If there are no chests with available stock, job is done
-                if (nearbyChests.Count == 0)
-                {
-                    Jotunn.Logger.LogInfo($"NPC could not find any chests with {inventoryItem}, ending job.");
-                    return;
-                }
-
-                // Otherwise go to first available chest and take as much as possible
-                Jotunn.Logger.LogInfo($"NPC found {nearbyChests.Count} nearby chests. Going to first available one...");
-
-                WorkerSupplyChestBehaviour targetChest = nearbyChests[0];
-
-                int requestedAmount = maxInventorySize - currentStock;
-                int amountTakenFromChest = targetChest.TakeItem(inventoryItem, requestedAmount);
-                Jotunn.Logger.LogInfo($"NPC took {amountTakenFromChest} {inventoryItem} from chest.");
-                int amountAddedToInv = AddItemToInventory(inventoryItem, amountTakenFromChest);
-                Jotunn.Logger.LogInfo($"NPC added {amountAddedToInv} {inventoryItem} to inventory.");
-            }
-
-            // While NPC has items in inventory, do the job!
-            List<Fireplace> nearbyTorches = FindNearbyResource<Fireplace>(searchRadius);
-            Jotunn.Logger.LogInfo($"NPC scanned for torches and found {nearbyTorches.Count} in range.");
-
-            foreach (Fireplace torch in nearbyTorches)
-            {
-                if (torch.m_fuelItem.TokenName() == inventoryItem)
-                {
-                    ZNetView torchView = torch.GetComponent<ZNetView>();
-                    int currentFuel = Mathf.CeilToInt(torchView.GetZDO().GetFloat(ZDOVars.s_fuel));
-                    int maxFuel = (int)torch.m_maxFuel;
-
-                    int fuelNeeded = maxFuel - currentFuel;
-                    if (fuelNeeded <= 0)
-                    {
-                        Jotunn.Logger.LogInfo($"Torch {torch.name} is already full.");
-                        continue;
-                    }
-
-                    int amountToUse = UseItemFromInventory(inventoryItem, fuelNeeded);
-                    if (amountToUse > 0)
-                    {
-                        torch.AddFuel(amountToUse);
-                        Jotunn.Logger.LogInfo($"NPC refueled {torch.name} with {amountToUse} {inventoryItem}.");
-                    }
-                    else
-                    {
-                        Jotunn.Logger.LogInfo($"NPC has no {inventoryItem} left in inventory.");
-                        break;
-                    }
-                }
-            }
+            Jotunn.Logger.LogInfo("NPC DOING JOB...");
         }
         
         private void Update()
         {
             jobTimer += Time.deltaTime;
 
-            if (jobTimer >= searchInterval)
+            if (jobTimer >= jobInterval)
             {
                 Jotunn.Logger.LogInfo("NPC STARTING JOB...");
                 jobTimer = 0f;

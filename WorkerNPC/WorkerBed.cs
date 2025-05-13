@@ -103,9 +103,9 @@ namespace WorkerNPC
         {
             GameObject dvergrPrefab = PrefabManager.Instance.GetPrefab(customName);
 
-            if (dvergrPrefab.GetComponent<NPCBehaviour>() == null)
+            if (dvergrPrefab.GetComponent<ResinWorker>() == null)
             {
-                dvergrPrefab.AddComponent<NPCBehaviour>();
+                dvergrPrefab.AddComponent<ResinWorker>();
             }
 
             workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);

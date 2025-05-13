@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="ResinWorker.cs" />
     <Compile Include="WorkerBed.cs" />
     <Compile Include="WorkerNPCBase.cs" />
     <Compile Include="WorkerSupplyChest.cs" />
