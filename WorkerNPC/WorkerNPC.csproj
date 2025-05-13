@@ -90,8 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="NPCBehaviour.cs" />
     <Compile Include="WorkerBed.cs" />
+    <Compile Include="WorkerNPCBase.cs" />
     <Compile Include="WorkerSupplyChest.cs" />
     <Compile Include="WorkerNPC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

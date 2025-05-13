@@ -65,7 +65,6 @@ namespace WorkerNPC
     internal class WorkerBedBehavior : MonoBehaviour
     {
         GameObject workerNPC;
-        string prefabName = WorkerNPCConfig.prefabName;
         string customName = WorkerNPCConfig.customName;
 
         private void Start()
@@ -103,16 +102,6 @@ namespace WorkerNPC
         private void SpawnWorkerNPC()
         {
             GameObject dvergrPrefab = PrefabManager.Instance.GetPrefab(customName);
-            if (dvergrPrefab == null)
-            {
-                dvergrPrefab = PrefabManager.Instance.CreateClonedPrefab(customName, prefabName);
-            }
-
-            if (dvergrPrefab == null)
-            {
-                Jotunn.Logger.LogError("Dvergr NPC prefab not found!");
-                return;
-            }
 
             if (dvergrPrefab.GetComponent<NPCBehaviour>() == null)
             {

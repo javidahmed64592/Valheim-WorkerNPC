@@ -33,6 +33,9 @@ namespace WorkerNPC
 
             // Add chest to build menu in Misc tab
             WorkerSupplyChest.RegisterWorkerChest();
+
+            // Add NPC
+            WorkerNPCBase.RegisterWorkerNPC();
         }
     }
 }
