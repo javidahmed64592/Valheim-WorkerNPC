@@ -112,7 +112,7 @@ namespace WorkerNPC
             return amountToUse;
         }
 
-        private List<WorkerSupplyChestBehaviour> FindNearbyWorkerChests(float searchRadius, string requiredItem)
+        private List<WorkerSupplyChestBehaviour> FindNearbySupplyChests(float searchRadius, string requiredItem)
         {
             List<WorkerSupplyChestBehaviour> workerChests = new List<WorkerSupplyChestBehaviour>();
 
@@ -174,7 +174,7 @@ namespace WorkerNPC
             if (currentStock == 0)
             {
                 Jotunn.Logger.LogInfo("NPC is searching for nearby chests...");
-                List<WorkerSupplyChestBehaviour> nearbyChests = FindNearbyWorkerChests(searchRadius, inventoryItem);
+                List<WorkerSupplyChestBehaviour> nearbyChests = FindNearbySupplyChests(searchRadius, inventoryItem);
 
                 // If there are no chests with available stock, job is done
                 if (nearbyChests.Count == 0)
@@ -229,7 +229,6 @@ namespace WorkerNPC
             }
         }
         
-
         private void Update()
         {
             jobTimer += Time.deltaTime;
