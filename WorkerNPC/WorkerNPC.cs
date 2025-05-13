@@ -28,14 +28,15 @@ namespace WorkerNPC
 
         public void Start()
         {
+            // Add NPC
+            ResinWorker resinWorker = new ResinWorker();
+            resinWorker.RegisterWorkerNPC();
+
             // Add bed to build menu in Misc tab
             WorkerBed.RegisterWorkerBed();
 
             // Add chest to build menu in Misc tab
             WorkerSupplyChest.RegisterWorkerChest();
-
-            // Add NPC
-            WorkerNPCBase.RegisterWorkerNPC();
         }
     }
 }

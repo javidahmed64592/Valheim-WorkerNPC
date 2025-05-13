@@ -65,7 +65,7 @@ namespace WorkerNPC
     internal class WorkerBedBehavior : MonoBehaviour
     {
         GameObject workerNPC;
-        string customName = WorkerNPCConfig.customName;
+        string customName = ResinWorkerConfig.customName;
 
         private void Start()
         {
@@ -102,11 +102,6 @@ namespace WorkerNPC
         private void SpawnWorkerNPC()
         {
             GameObject dvergrPrefab = PrefabManager.Instance.GetPrefab(customName);
-
-            if (dvergrPrefab.GetComponent<ResinWorker>() == null)
-            {
-                dvergrPrefab.AddComponent<ResinWorker>();
-            }
 
             workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);
             workerNPC.transform.parent = transform;

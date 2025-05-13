@@ -1,5 +1,4 @@
-﻿using Jotunn;
-using Jotunn.Managers;
+﻿using Jotunn.Managers;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,13 +10,14 @@ namespace WorkerNPC
         static string prefabName = WorkerNPCConfig.prefabName;
         static string customName = WorkerNPCConfig.customName;
 
-        public static void RegisterWorkerNPC()
+        public void RegisterWorkerNPC()
         {
             Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
 
             void CreateNPC()
             {
                 GameObject npcObject = GetBaseNPC();
+                PrefabManager.Instance.AddPrefab(npcObject);
 
                 Jotunn.Logger.LogInfo($"Registered {displayName}.");
                 PrefabManager.OnVanillaPrefabsAvailable -= CreateNPC;
@@ -26,7 +26,7 @@ namespace WorkerNPC
             PrefabManager.OnVanillaPrefabsAvailable += CreateNPC;
         }
 
-        private static GameObject GetBaseNPC()
+        internal virtual GameObject GetBaseNPC()
         {
             GameObject clonedNPC = PrefabManager.Instance.CreateClonedPrefab(customName, prefabName);
 

@@ -4,7 +4,21 @@ using UnityEngine;
 
 namespace WorkerNPC
 {
-    internal class ResinWorker : NPCBehaviour
+    internal class ResinWorker : WorkerNPCBase
+    {
+        static string customName = ResinWorkerConfig.customName;
+
+        internal override GameObject GetBaseNPC()
+        {
+            GameObject clonedNPC = base.GetBaseNPC();
+            clonedNPC.name = customName;
+            clonedNPC.AddComponent<ResinWorkerBehaviour>();
+            Jotunn.Logger.LogInfo("Added ResinWorkerBehaviour to NPC prefab.");
+            return clonedNPC;
+        }
+    }
+
+    internal class ResinWorkerBehaviour : NPCBehaviour
     {
         // Inventory
         int maxInventorySize = ResinWorkerConfig.maxInventorySize;

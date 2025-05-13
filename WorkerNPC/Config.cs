@@ -34,6 +34,7 @@ namespace WorkerNPC
 
     internal class ResinWorkerConfig
     {
+        public static string customName = "resin_worker";
         public static int maxInventorySize = 50;
         public static string inventoryItem = "$item_resin";
         public static float searchRadius = 10f;
