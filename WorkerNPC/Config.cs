@@ -24,6 +24,14 @@ namespace WorkerNPC
         public static string customName = "worker_supply_chest";
     }
 
+    internal class DepositChestConfig
+    {
+        public static string displayName = "Deposit Chest";
+        public static string description = "Workers deposit items into this chest. Must be assigned to an NPC.";
+        public static string prefabName = "piece_chest_wood";
+        public static string customName = "worker_deposit_chest";
+    }
+
     internal class WorkerNPCConfig
     {
         public static string displayName = "Worker NPC";
