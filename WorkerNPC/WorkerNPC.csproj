@@ -90,13 +90,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="ResinWorker.cs" />
-    <Compile Include="WorkerBed.cs" />
-    <Compile Include="WorkerDepositChest.cs" />
-    <Compile Include="WorkerNPCBase.cs" />
-    <Compile Include="WorkerSupplyChest.cs" />
+    <Compile Include="npc\ResinWorker.cs" />
+    <Compile Include="buildMenuItems\WorkerBed.cs" />
+    <Compile Include="buildMenuItems\WorkerDepositChest.cs" />
+    <Compile Include="npc\WorkerNPCBase.cs" />
+    <Compile Include="buildMenuItems\WorkerSupplyChest.cs" />
     <Compile Include="WorkerNPC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

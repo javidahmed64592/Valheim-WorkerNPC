@@ -108,6 +108,8 @@ namespace WorkerNPC
             return amountToUse;
         }
 
+        // TODO: Use GetNearbyResource instead
+        // TODO: Also add for deposit chest
         internal List<WorkerSupplyChestBehaviour> FindNearbySupplyChests(float searchRadius, string requiredItem)
         {
             List<WorkerSupplyChestBehaviour> workerChests = new List<WorkerSupplyChestBehaviour>();
@@ -161,6 +163,8 @@ namespace WorkerNPC
 
             return resources;
         }
+
+        // TODO: Add method to control NPC movement
 
         internal virtual void DoJob()
         {
