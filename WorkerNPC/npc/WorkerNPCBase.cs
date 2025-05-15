@@ -164,7 +164,11 @@ namespace WorkerNPC
             return resources;
         }
 
-        // TODO: Add method to control NPC movement
+        internal void MoveTo(Vector3 targetPosition)
+        {
+            // TODO: Move to target position
+            Jotunn.Logger.LogInfo($"Moving NPC to {targetPosition}...");
+        }
 
         internal virtual void DoJob()
         {

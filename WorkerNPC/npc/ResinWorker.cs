@@ -47,6 +47,7 @@ namespace WorkerNPC
                 Jotunn.Logger.LogInfo($"NPC found {nearbyChests.Count} nearby chests. Going to first available one...");
 
                 WorkerSupplyChestBehaviour targetChest = nearbyChests[0];
+                MoveTo(targetChest.transform.position);
 
                 int requestedAmount = maxInventorySize - currentStock;
                 int amountTakenFromChest = targetChest.TakeItem(inventoryItem, requestedAmount);
@@ -74,6 +75,7 @@ namespace WorkerNPC
                         continue;
                     }
 
+                    MoveTo(torch.transform.position);
                     int amountToUse = UseItemFromInventory(inventoryItem, fuelNeeded);
                     if (amountToUse > 0)
                     {
