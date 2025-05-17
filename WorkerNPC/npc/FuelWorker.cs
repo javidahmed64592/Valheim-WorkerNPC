@@ -21,15 +21,13 @@ namespace WorkerNPC
 
     internal class FuelWorkerBehaviour : NPCBehaviour
     {
-        // Inventory
         int maxInventorySize = FuelWorkerConfig.maxInventorySize;
         float searchRadius = FuelWorkerConfig.searchRadius;
-        float searchInterval = FuelWorkerConfig.searchInterval;
 
         internal new void Start()
         {
             base.Start();
-            jobInterval = searchInterval;
+            jobInterval = FuelWorkerConfig.jobInterval;
         }
 
         private int GetFireplaceRequiredFuel(Fireplace fireplace)

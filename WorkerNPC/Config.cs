@@ -42,6 +42,7 @@ namespace WorkerNPC
     internal class FuelWorkerConfig
     {
         public static string customName = "fuel_worker";
+        public static float jobInterval = 10f;
         public static int maxInventorySize = 50;
         public static float searchRadius = 10f;
         public static float searchInterval = 10f;
