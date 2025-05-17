@@ -111,10 +111,20 @@ namespace WorkerNPC
                     }
 
                     WorkerSupplyChestBehaviour targetChest = nearbyChests[chestIndex];
-                    MoveTo(targetChest.transform.position);
 
                     foreach (KeyValuePair<string, int> fuelItem in fuelItemsNeeded.ToList())
                     {
+                        if (targetChest.CountItems(fuelItem.Key) == 0)
+                        {
+                            Jotunn.Logger.LogInfo($"Chest has no {fuelItem.Key} left.");
+                            continue;
+                        }
+
+                        if (Vector3.Distance(transform.position, targetChest.transform.position) > 2f)
+                        {
+                            MoveTo(targetChest.transform.position);
+                        }
+
                         string itemName = fuelItem.Key;
                         int amountToTake = fuelItem.Value;
                         int amountTakenFromChest = targetChest.TakeItem(itemName, amountToTake);
