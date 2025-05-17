@@ -32,6 +32,9 @@ namespace WorkerNPC
             FuelWorker resinWorker = new FuelWorker();
             resinWorker.RegisterWorkerNPC();
 
+            BuildingRepairWorker repairWorker = new BuildingRepairWorker();
+            repairWorker.RegisterWorkerNPC();
+
             // Add bed to build menu in Misc tab
             WorkerBed.RegisterWorkerBed();
 

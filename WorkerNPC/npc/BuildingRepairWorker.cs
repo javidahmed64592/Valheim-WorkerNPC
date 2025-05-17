@@ -7,10 +7,12 @@ namespace WorkerNPC
 {
     internal class BuildingRepairWorker : WorkerNPCBase
     {
-        static string customName = BuildingRepairWorkerConfig.customName;
 
         internal override GameObject GetBaseNPC()
         {
+            displayName = BuildingRepairWorkerConfig.displayName;
+            customName = BuildingRepairWorkerConfig.customName;
+
             GameObject clonedNPC = base.GetBaseNPC();
             clonedNPC.name = customName;
             clonedNPC.AddComponent<BuildingRepairWorkerBehaviour>();

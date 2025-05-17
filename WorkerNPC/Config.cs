@@ -35,16 +35,24 @@ namespace WorkerNPC
     internal class WorkerNPCConfig
     {
         public static string displayName = "Worker NPC";
-        public static string prefabName = "Dverger";
         public static string customName = "worker_npc";
+        public static string prefabName = "Dverger";
     }
 
     internal class FuelWorkerConfig
     {
+        public static string displayName = "Fuel Worker NPC";
         public static string customName = "fuel_worker";
         public static float jobInterval = 10f;
-        public static int maxInventorySize = 50;
         public static float searchRadius = 10f;
-        public static float searchInterval = 10f;
+        public static int maxInventorySize = 50;
+    }
+
+    internal class BuildingRepairWorkerConfig
+    {
+        public static string displayName = "Building Repair Worker NPC";
+        public static string customName = "building_repair_worker";
+        public static float jobInterval = 10f;
+        public static float searchRadius = 10f;
     }
 }

@@ -7,10 +7,11 @@ namespace WorkerNPC
 {
     internal class FuelWorker : WorkerNPCBase
     {
-        static string customName = FuelWorkerConfig.customName;
-
         internal override GameObject GetBaseNPC()
         {
+            displayName = FuelWorkerConfig.displayName;
+            customName = FuelWorkerConfig.customName;
+
             GameObject clonedNPC = base.GetBaseNPC();
             clonedNPC.name = customName;
             clonedNPC.AddComponent<FuelWorkerBehaviour>();

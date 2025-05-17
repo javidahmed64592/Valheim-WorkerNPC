@@ -6,9 +6,9 @@ namespace WorkerNPC
 {
     internal class WorkerNPCBase
     {
-        static string displayName = WorkerNPCConfig.displayName;
+        internal static string displayName = WorkerNPCConfig.displayName;
+        internal static string customName = WorkerNPCConfig.customName;
         static string prefabName = WorkerNPCConfig.prefabName;
-        static string customName = WorkerNPCConfig.customName;
 
         public void RegisterWorkerNPC()
         {
