@@ -65,7 +65,7 @@ namespace WorkerNPC
     internal class WorkerBedBehavior : MonoBehaviour
     {
         GameObject workerNPC;
-        string customName = ResinWorkerConfig.customName;
+        string customName = FuelWorkerConfig.customName;
 
         private void Start()
         {

@@ -1,5 +1,6 @@
 ﻿using Jotunn.Managers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace WorkerNPC
@@ -43,11 +44,11 @@ namespace WorkerNPC
     internal class NPCBehaviour : MonoBehaviour
     {
         internal ZNetView zNetView;
+        internal ZDO zdo;
         float jobTimer = 0f;
         float jobInterval = 10f;
 
         // Inventory
-        string inventoryKey = WorkerNPCConfig.inventoryKey;
         int maxInventorySize = 50;
 
         internal void Start()
@@ -57,6 +58,12 @@ namespace WorkerNPC
             {
                 Jotunn.Logger.LogError("Failed to get ZNetView component.");
                 return;
+            }
+
+            zdo = zNetView.GetZDO();
+            if (zdo == null)
+            {
+                Jotunn.Logger.LogError("Failed to get ZDO.");
             }
         }
 
@@ -68,10 +75,7 @@ namespace WorkerNPC
                 return 0;
             }
 
-            string inventoryData = zNetView.GetZDO().GetString(inventoryKey, $"{itemName}:0");
-            int currentAmount = int.Parse(inventoryData.Split(':')[1]);
-
-            return currentAmount;
+            return zdo.GetInt(itemName, 0);
         }
 
         internal int AddItemToInventory(string itemName, int amountRequested)
@@ -87,7 +91,7 @@ namespace WorkerNPC
             int amountToAdd = Mathf.Min(amountRequested, amountCanAdd);
 
             int newAmount = currentAmount + amountToAdd;
-            zNetView.GetZDO().Set(inventoryKey, $"{itemName}:{newAmount}");
+            zdo.Set(itemName, newAmount);
             return amountToAdd;
         }
 
@@ -103,49 +107,18 @@ namespace WorkerNPC
             int amountToUse = Mathf.Min(amountRequested, currentAmount);
 
             int newAmount = currentAmount - amountToUse;
-            zNetView.GetZDO().Set(inventoryKey, $"{itemName}:{newAmount}");
-
+            zdo.Set(itemName, newAmount);
             return amountToUse;
         }
 
-        // TODO: Use GetNearbyResource instead
-        // TODO: Also add for deposit chest
-        internal List<WorkerSupplyChestBehaviour> FindNearbySupplyChests(float searchRadius, string requiredItem)
-        {
-            List<WorkerSupplyChestBehaviour> workerChests = new List<WorkerSupplyChestBehaviour>();
-
-            if (transform.parent == null)
-            {
-                Jotunn.Logger.LogWarning("NPC has no parent object — cannot find nearby Worker Chests.");
-                return workerChests;
-            }
-
-            Vector3 bedPosition = transform.parent.position;
-
-            WorkerSupplyChestBehaviour[] allChests = FindObjectsOfType<WorkerSupplyChestBehaviour>();
-
-            foreach (WorkerSupplyChestBehaviour chest in allChests)
-            {
-                float distance = Vector3.Distance(chest.transform.position, bedPosition);
-                if (distance > searchRadius) continue;
-
-                if (chest.CountItems(requiredItem) > 0)
-                {
-                    workerChests.Add(chest);
-                }
-            }
-
-            return workerChests;
-        }
-
-        internal List<T> FindNearbyResource<T>(float searchRadius) where T : MonoBehaviour
+        internal T[] FindNearbyResource<T>(float searchRadius) where T : MonoBehaviour
         {
             List<T> resources = new List<T>();
 
             if (transform.parent == null)
             {
                 Jotunn.Logger.LogWarning("NPC has no parent object — cannot find nearby resources.");
-                return resources;
+                return resources.ToArray();
             }
 
             Vector3 bedPosition = transform.parent.position;
@@ -161,7 +134,29 @@ namespace WorkerNPC
                 }
             }
 
-            return resources;
+            return resources.ToArray();
+        }
+
+        internal WorkerSupplyChestBehaviour[] FindNearbySupplyChests(float searchRadius)
+        {
+            if (transform.parent == null)
+            {
+                Jotunn.Logger.LogWarning("NPC has no parent object — cannot find nearby Worker Chests.");
+                return null;
+            }
+
+            return FindNearbyResource<WorkerSupplyChestBehaviour>(searchRadius);
+        }
+
+        internal WorkerDepositChestBehaviour[] FindNearbyDepositChests(float searchRadius)
+        {
+            if (transform.parent == null)
+            {
+                Jotunn.Logger.LogWarning("NPC has no parent object — cannot find nearby Worker Chests.");
+                return null;
+            }
+
+            return FindNearbyResource<WorkerDepositChestBehaviour>(searchRadius);
         }
 
         internal void MoveTo(Vector3 targetPosition)

@@ -29,7 +29,7 @@ namespace WorkerNPC
         public void Start()
         {
             // Add NPC
-            ResinWorker resinWorker = new ResinWorker();
+            FuelWorker resinWorker = new FuelWorker();
             resinWorker.RegisterWorkerNPC();
 
             // Add bed to build menu in Misc tab
