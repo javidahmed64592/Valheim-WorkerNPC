@@ -156,7 +156,7 @@ namespace WorkerNPC
             return FindNearbyResource<WorkerDepositChestBehaviour>(searchRadius);
         }
 
-        internal void MoveTo(Vector3 targetPosition)
+        internal void MoveTo(GameObject target)
         {
             // TODO: Move to target position
             Jotunn.Logger.LogInfo($"Moving NPC to {targetPosition}...");

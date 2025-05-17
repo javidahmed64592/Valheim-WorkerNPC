@@ -127,7 +127,7 @@ namespace WorkerNPC
 
                         if (Vector3.Distance(transform.position, targetChest.transform.position) > 2f)
                         {
-                            MoveTo(targetChest.transform.position);
+                            MoveTo(targetChest.gameObject);
                         }
 
                         string itemName = fuelItem.Key;
@@ -164,7 +164,7 @@ namespace WorkerNPC
                 int amountToUse = UseItemFromInventory(fuelItem, fuelNeeded);
                 if (amountToUse > 0)
                 {
-                    MoveTo(fireplace.transform.position);
+                    MoveTo(fireplace.gameObject);
                     fireplace.AddFuel(amountToUse);
                     Jotunn.Logger.LogInfo($"NPC refueled {fireplace.name} with {amountToUse} {fuelItem}.");
                 }

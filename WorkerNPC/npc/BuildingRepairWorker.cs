@@ -40,7 +40,7 @@ namespace WorkerNPC
             {
                 if (building.GetHealthPercentage() < 1f)
                 {
-                    MoveTo(building.transform.position);
+                    MoveTo(building.gameObject);
                     building.Repair();
                 }
             }
