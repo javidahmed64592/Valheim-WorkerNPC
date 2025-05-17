@@ -1,6 +1,5 @@
 ﻿using Jotunn.Managers;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace WorkerNPC
@@ -45,8 +44,8 @@ namespace WorkerNPC
     {
         internal ZNetView zNetView;
         internal ZDO zdo;
+        internal float jobInterval;
         float jobTimer = 0f;
-        float jobInterval = 10f;
 
         // Inventory
         int maxInventorySize = 50;

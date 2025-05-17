@@ -24,6 +24,13 @@ namespace WorkerNPC
         // Inventory
         int maxInventorySize = FuelWorkerConfig.maxInventorySize;
         float searchRadius = FuelWorkerConfig.searchRadius;
+        float searchInterval = FuelWorkerConfig.searchInterval;
+
+        internal new void Start()
+        {
+            base.Start();
+            jobInterval = searchInterval;
+        }
 
         private int GetFireplaceRequiredFuel(Fireplace fireplace)
         {
