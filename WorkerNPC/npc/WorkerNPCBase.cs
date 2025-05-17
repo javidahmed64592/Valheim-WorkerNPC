@@ -12,8 +12,6 @@ namespace WorkerNPC
 
         public void RegisterWorkerNPC()
         {
-            Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
-
             void CreateNPC()
             {
                 GameObject npcObject = GetBaseNPC();
@@ -168,7 +166,7 @@ namespace WorkerNPC
         {
             Jotunn.Logger.LogInfo("NPC DOING JOB...");
         }
-        
+
         private void Update()
         {
             jobTimer += Time.deltaTime;

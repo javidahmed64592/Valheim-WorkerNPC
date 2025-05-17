@@ -16,8 +16,6 @@ namespace WorkerNPC
 
         public static void RegisterWorkerBed()
         {
-            Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
-
             void CreateBed()
             {
                 GameObject bedObject = GetBaseBed();
@@ -85,13 +83,10 @@ namespace WorkerNPC
                 }
             }
 
-            if (npcFound)
+            if (!npcFound)
             {
-                Jotunn.Logger.LogInfo("Worker NPC already exists — skipping spawn.");
-                return;
+                SpawnWorkerNPC();
             }
-
-            SpawnWorkerNPC();
         }
 
         private void OnDestroy()
@@ -112,7 +107,6 @@ namespace WorkerNPC
             if (workerNPC != null)
             {
                 ZNetScene.instance.Destroy(workerNPC);
-                Jotunn.Logger.LogInfo("Worker NPC removed.");
             }
         }
     }

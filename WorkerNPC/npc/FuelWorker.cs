@@ -14,7 +14,6 @@ namespace WorkerNPC
             GameObject clonedNPC = base.GetBaseNPC();
             clonedNPC.name = customName;
             clonedNPC.AddComponent<FuelWorkerBehaviour>();
-            Jotunn.Logger.LogInfo("Added FuelWorkerBehaviour to NPC prefab.");
             return clonedNPC;
         }
     }

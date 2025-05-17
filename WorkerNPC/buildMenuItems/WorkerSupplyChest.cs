@@ -16,8 +16,6 @@ namespace WorkerNPC
 
         public static void RegisterWorkerChest()
         {
-            Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
-
             void CreateChest()
             {
                 GameObject chestObject = GetBaseChest();
@@ -81,9 +79,8 @@ namespace WorkerNPC
         {
             Inventory chestInventory = chestContainer.GetInventory();
             int itemCount = CountItems(itemName);
-            if (itemCount < 0)
+            if (itemCount <= 0)
             {
-                Jotunn.Logger.LogWarning($"Chest has no {itemName}.");
                 return 0;
             }
 

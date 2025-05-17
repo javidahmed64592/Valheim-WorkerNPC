@@ -16,8 +16,6 @@ namespace WorkerNPC
 
         public static void RegisterWorkerChest()
         {
-            Jotunn.Logger.LogInfo($"Attempting to register {displayName}...");
-
             void CreateChest()
             {
                 GameObject chestObject = GetBaseChest();
