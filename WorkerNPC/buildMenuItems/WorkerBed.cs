@@ -19,7 +19,7 @@ namespace WorkerNPC
             void CreateBed()
             {
                 GameObject bedObject = GetBaseBed();
-                bedObject.AddComponent<WorkerBedBehavior>();
+                bedObject.AddComponent<WorkerBedBehaviour>();
 
                 PieceConfig bed = new PieceConfig
                 {
@@ -60,7 +60,7 @@ namespace WorkerNPC
         }
     }
 
-    internal class WorkerBedBehavior : MonoBehaviour
+    internal class WorkerBedBehaviour : MonoBehaviour
     {
         GameObject workerNPC;
         string customName = FuelWorkerConfig.customName;
