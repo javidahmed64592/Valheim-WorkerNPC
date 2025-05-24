@@ -40,8 +40,10 @@ namespace WorkerNPC
 
     internal class NPCBehaviour : MonoBehaviour
     {
+        internal Character character;
         internal ZNetView zNetView;
         internal ZDO zdo;
+        internal WorkerBedBehaviour parentBed;
         internal float jobInterval;
         float jobTimer = 0f;
 
@@ -56,10 +58,23 @@ namespace WorkerNPC
                 return;
             }
 
+            parentBed = transform.parent.GetComponent<WorkerBedBehaviour>();
+
+            character = GetComponent<Character>();
+            if (character == null)
+            {
+                Jotunn.Logger.LogError("Failed to get Character component.");
+                ZNetScene.instance.Destroy(gameObject);
+                return;
+            }
+
+            character.m_onDeath += OnNPCDeath;
+
             zNetView = transform.parent.GetComponent<ZNetView>();
             if (zNetView == null)
             {
                 Jotunn.Logger.LogError("Failed to get ZNetView component.");
+                ZNetScene.instance.Destroy(gameObject);
                 return;
             }
 
@@ -67,7 +82,13 @@ namespace WorkerNPC
             if (zdo == null)
             {
                 Jotunn.Logger.LogError("Failed to get ZDO.");
+                ZNetScene.instance.Destroy(gameObject);
             }
+        }
+
+        internal virtual void OnNPCDeath()
+        {
+            parentBed.OnNPCDeath();
         }
 
         internal int CheckInventory(string itemName)

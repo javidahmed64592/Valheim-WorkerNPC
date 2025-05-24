@@ -119,6 +119,16 @@ namespace WorkerNPC
             if (workerNPC != null)
             {
                 ZNetScene.instance.Destroy(workerNPC);
+                workerNPC = null;
+            }
+        }
+
+        public void OnNPCDeath()
+        {
+            if (workerNPC != null)
+            {
+                RemoveWorkerNPC();
+                SpawnWorkerNPC();
             }
         }
     }
