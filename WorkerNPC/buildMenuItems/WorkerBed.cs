@@ -7,7 +7,6 @@ namespace WorkerNPC
 {
     internal static class WorkerBed
     {
-        static string displayName = BedConfig.displayName;
         static string description = BedConfig.description;
         static string prefabName = BedConfig.prefabName;
         static string customName = BedConfig.customName;
@@ -19,18 +18,18 @@ namespace WorkerNPC
             void CreateBed()
             {
                 GameObject bedObject = GetBaseBed();
-                bedObject.AddComponent<WorkerBedBehaviour>();
+                FuelWorkerBed fuelWorkerBed = bedObject.AddComponent<FuelWorkerBed>();
 
                 PieceConfig bed = new PieceConfig
                 {
-                    Name = displayName,
+                    Name = fuelWorkerBed.displayName,
                     Description = description,
                     PieceTable = pieceTable,
                     Category = buildCategory
                 };
 
                 PieceManager.Instance.AddPiece(new CustomPiece(bedObject, false, bed));
-                Jotunn.Logger.LogInfo($"Registered {displayName} under {buildCategory} category.");
+                Jotunn.Logger.LogInfo($"Registered {fuelWorkerBed.displayName} under {buildCategory} category.");
                 PrefabManager.OnVanillaPrefabsAvailable -= CreateBed;
             }
 
@@ -62,8 +61,9 @@ namespace WorkerNPC
 
     internal class WorkerBedBehaviour : MonoBehaviour
     {
+        internal virtual string displayName { get { return WorkerNPCConfig.displayName; } }
+        internal virtual string npcName { get { return WorkerNPCConfig.customName; } }
         GameObject workerNPC;
-        string customName = FuelWorkerConfig.customName;
 
         private void Start()
         {
@@ -76,7 +76,7 @@ namespace WorkerNPC
             bool npcFound = false;
             foreach (Transform child in transform)
             {
-                if (child.name.Contains(customName))
+                if (child.name.Contains(npcName))
                 {
                     npcFound = true;
                     break;
@@ -96,8 +96,7 @@ namespace WorkerNPC
 
         private void SpawnWorkerNPC()
         {
-            GameObject dvergrPrefab = PrefabManager.Instance.GetPrefab(customName);
-
+            GameObject dvergrPrefab = PrefabManager.Instance.GetPrefab(npcName);
             workerNPC = Instantiate(dvergrPrefab, transform.position + Vector3.up, Quaternion.identity);
             workerNPC.transform.parent = transform;
         }
@@ -109,5 +108,17 @@ namespace WorkerNPC
                 ZNetScene.instance.Destroy(workerNPC);
             }
         }
+    }
+
+    internal class FuelWorkerBed : WorkerBedBehaviour
+    {
+        internal override string displayName { get { return FuelWorkerConfig.displayName; } }
+        internal override string npcName { get { return FuelWorkerConfig.customName; } }
+    }
+
+    internal class BuildingRepairWorkerBed : WorkerBedBehaviour
+    {
+        internal override string displayName { get { return BuildingRepairWorkerConfig.displayName; } }
+        internal override string npcName { get { return BuildingRepairWorkerConfig.customName; } }
     }
 }
