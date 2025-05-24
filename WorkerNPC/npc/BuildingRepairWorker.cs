@@ -1,13 +1,9 @@
-﻿using Jotunn;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace WorkerNPC
 {
     internal class BuildingRepairWorker : WorkerNPCBase
     {
-
         internal override GameObject GetBaseNPC()
         {
             displayName = BuildingRepairWorkerConfig.displayName;
