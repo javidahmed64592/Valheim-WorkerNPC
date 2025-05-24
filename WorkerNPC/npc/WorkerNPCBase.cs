@@ -50,6 +50,12 @@ namespace WorkerNPC
 
         internal void Start()
         {
+            if (transform.parent == null)
+            {
+                ZNetScene.instance.Destroy(gameObject);
+                return;
+            }
+
             zNetView = transform.parent.GetComponent<ZNetView>();
             if (zNetView == null)
             {
