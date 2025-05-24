@@ -165,7 +165,7 @@ namespace WorkerNPC
         internal void MoveTo(GameObject target)
         {
             // TODO: Move to target position
-            Jotunn.Logger.LogInfo($"Moving NPC to {targetPosition}...");
+            Jotunn.Logger.LogInfo($"Moving NPC to {target.transform.position}...");
         }
 
         internal virtual void DoJob()
