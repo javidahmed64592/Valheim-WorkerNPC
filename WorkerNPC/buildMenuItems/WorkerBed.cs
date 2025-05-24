@@ -2,43 +2,56 @@
 using Jotunn.Configs;
 using Jotunn.Entities;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace WorkerNPC
 {
     internal static class WorkerBed
     {
         static string description = BedConfig.description;
-        static string prefabName = BedConfig.prefabName;
-        static string customName = BedConfig.customName;
+        static string prefabName = PrefabNamesConfig.bedPrefabName;
         static string pieceTable = BuildMenuConfig.pieceTable;
         static string buildCategory = BuildMenuConfig.buildCategory;
 
         public static void RegisterWorkerBed()
         {
-            void CreateBed()
+            List<Type> bedTypes = new List<Type>
             {
-                GameObject bedObject = GetBaseBed();
-                FuelWorkerBed fuelWorkerBed = bedObject.AddComponent<FuelWorkerBed>();
+                typeof(FuelWorkerBed),
+                typeof(BuildingRepairWorkerBed)
+            };
 
-                PieceConfig bed = new PieceConfig
+            void CreateBeds()
+            {
+
+                foreach (Type bedType in bedTypes)
                 {
-                    Name = fuelWorkerBed.displayName,
-                    Description = description,
-                    PieceTable = pieceTable,
-                    Category = buildCategory
-                };
+                    string npcName = bedType.Name;
+                    GameObject bedObject = GetBaseBed(npcName);
+                    WorkerBedBehaviour bedBehavior = (WorkerBedBehaviour)bedObject.AddComponent(bedType);
 
-                PieceManager.Instance.AddPiece(new CustomPiece(bedObject, false, bed));
-                Jotunn.Logger.LogInfo($"Registered {fuelWorkerBed.displayName} under {buildCategory} category.");
-                PrefabManager.OnVanillaPrefabsAvailable -= CreateBed;
+                    PieceConfig bed = new PieceConfig
+                    {
+                        Name = bedBehavior.displayName,
+                        Description = description,
+                        PieceTable = pieceTable,
+                        Category = buildCategory
+                    };
+
+                    PieceManager.Instance.AddPiece(new CustomPiece(bedObject, false, bed));
+                    Jotunn.Logger.LogInfo($"Registered {bedBehavior.displayName} under {buildCategory} category.");
+                }
+
+                PrefabManager.OnVanillaPrefabsAvailable -= CreateBeds;
             }
 
-            PrefabManager.OnVanillaPrefabsAvailable += CreateBed;
+            PrefabManager.OnVanillaPrefabsAvailable += CreateBeds;
         }
 
-        private static GameObject GetBaseBed()
+        private static GameObject GetBaseBed(string npcName)
         {
-            GameObject clonedBed = PrefabManager.Instance.CreateClonedPrefab(customName, prefabName);
+            GameObject clonedBed = PrefabManager.Instance.CreateClonedPrefab($"{npcName}_bed", prefabName);
 
             if (clonedBed == null)
             {
@@ -51,7 +64,7 @@ namespace WorkerNPC
                 Bed bedComponent = clonedBed.GetComponent<Bed>();
                 if (bedComponent != null)
                 {
-                    Object.Destroy(bedComponent);
+                    UnityEngine.Object.Destroy(bedComponent);
                 }
             }
 
@@ -61,8 +74,8 @@ namespace WorkerNPC
 
     internal class WorkerBedBehaviour : MonoBehaviour
     {
-        internal virtual string displayName { get { return WorkerNPCConfig.displayName; } }
-        internal virtual string npcName { get { return WorkerNPCConfig.customName; } }
+        internal virtual string displayName { get { return ""; } }
+        internal virtual string npcName { get { return ""; } }
         GameObject workerNPC;
 
         private void Start()

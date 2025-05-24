@@ -9,7 +9,7 @@ namespace WorkerNPC
     {
         static string displayName = SupplyChestConfig.displayName;
         static string description = SupplyChestConfig.description;
-        static string prefabName = SupplyChestConfig.prefabName;
+        static string prefabName = PrefabNamesConfig.chestPrefabName;
         static string customName = SupplyChestConfig.customName;
         static string pieceTable = BuildMenuConfig.pieceTable;
         static string buildCategory = BuildMenuConfig.buildCategory;

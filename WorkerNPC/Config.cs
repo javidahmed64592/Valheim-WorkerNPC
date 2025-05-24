@@ -8,19 +8,22 @@ namespace WorkerNPC
         public static string buildCategory = "Workers";
     }
 
+    internal class PrefabNamesConfig
+    {
+        public static string bedPrefabName = "bed";
+        public static string chestPrefabName = "piece_chest_wood";
+        public static string npcPrefabName = "Dverger";
+    }
+
     internal class BedConfig
     {
-        public static string displayName = "Worker Bed";
         public static string description = "A bed for workers to rest in. Spawns a worker NPC when placed.";
-        public static string prefabName = "bed";
-        public static string customName = "worker_bed";
     }
 
     internal class SupplyChestConfig
     {
         public static string displayName = "Supply Chest";
         public static string description = "Workers withdraw items from this chest.";
-        public static string prefabName = "piece_chest_wood";
         public static string customName = "worker_supply_chest";
     }
 
@@ -28,15 +31,7 @@ namespace WorkerNPC
     {
         public static string displayName = "Deposit Chest";
         public static string description = "Workers deposit items into this chest. Must be assigned to an NPC.";
-        public static string prefabName = "piece_chest_wood";
         public static string customName = "worker_deposit_chest";
-    }
-
-    internal class WorkerNPCConfig
-    {
-        public static string displayName = "Worker NPC";
-        public static string customName = "worker_npc";
-        public static string prefabName = "Dverger";
     }
 
     internal class FuelWorkerConfig
