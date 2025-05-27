@@ -1,4 +1,5 @@
-﻿using Jotunn.Managers;
+﻿using Jotunn.Entities;
+using Jotunn.Managers;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,10 +45,12 @@ namespace WorkerNPC
         internal ZNetView zNetView;
         internal ZDO zdo;
         internal WorkerBedBehaviour parentBed;
+        internal Vector3 parentBedPosition;
         internal float jobInterval;
         float jobTimer = 0f;
 
         // Inventory
+        internal Dictionary<string, int> inventory = new Dictionary<string, int>();
         int maxInventorySize = 50;
 
         internal void Start()
@@ -59,6 +62,7 @@ namespace WorkerNPC
             }
 
             parentBed = transform.parent.GetComponent<WorkerBedBehaviour>();
+            parentBedPosition = transform.parent.position;
 
             character = GetComponent<Character>();
             if (character == null)
@@ -91,6 +95,11 @@ namespace WorkerNPC
             parentBed.OnNPCDeath();
         }
 
+        internal void OnDestroy()
+        {
+            DropItems();
+        }
+
         internal int CheckInventory(string itemName)
         {
             if (zNetView == null || !zNetView.IsValid())
@@ -115,7 +124,8 @@ namespace WorkerNPC
             int amountToAdd = Mathf.Min(amountRequested, amountCanAdd);
 
             int newAmount = currentAmount + amountToAdd;
-            zdo.Set(itemName, newAmount);
+            inventory[itemName] = newAmount;
+            zdo.Set(itemName, inventory[itemName]);
             return amountToAdd;
         }
 
@@ -131,8 +141,49 @@ namespace WorkerNPC
             int amountToUse = Mathf.Min(amountRequested, currentAmount);
 
             int newAmount = currentAmount - amountToUse;
-            zdo.Set(itemName, newAmount);
+            inventory[itemName] = newAmount;
+            zdo.Set(itemName, inventory[itemName]);
             return amountToUse;
+        }
+
+        public void DropItem(string itemName, int quantity, Vector3 position)
+        {
+            GameObject itemPrefab = PrefabManager.Instance.GetPrefab(itemName);
+
+            if (itemPrefab != null)
+            {
+                GameObject itemDrop = Instantiate(itemPrefab, position, Quaternion.identity);
+                ItemDrop itemDropComponent = itemDrop.GetComponent<ItemDrop>();
+
+                if (itemDropComponent != null)
+                {
+                    itemDropComponent.SetStack(quantity);
+                }
+                else
+                {
+                    Jotunn.Logger.LogWarning($"Failed to find ItemDrop component for {itemName}.");
+                }
+            }
+            else
+            {
+                Jotunn.Logger.LogWarning($"Failed to find prefab for {itemName}.");
+            }
+        }
+
+        internal void DropItems()
+        {
+            CustomLocalization localization = LocalizationManager.Instance.GetLocalization();
+
+            foreach (KeyValuePair<string, int> item in inventory)
+            {
+                string itemName = localization.TryTranslate(item.Key).Trim();
+                int amount = item.Value;
+                if (amount > 0)
+                {
+                    DropItem(itemName, amount, parentBedPosition);
+                }
+            }
+            inventory.Clear();
         }
 
         internal T[] FindNearbyResource<T>(float searchRadius) where T : MonoBehaviour
